@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Regeln – TdFF Tippspiel{% endblock %}
+{% block content %}
+<h1>Spielregeln & Punktesystem</h1>
+
+<div class="card">
+  <h2>Wie funktioniert das Tippspiel?</h2>
+  <p>
+    Du gibst Tipps ab auf die <strong>Etappensiegerinnen</strong> (vor jeder der 9 Etappen)
+    und auf die <strong>Endergebnisse</strong> (Gesamtwertung, Punktewertung, Bergwertung, Nachwuchswertung, Teamwertung).
+    Für jeden korrekten Tipp erhältst du Punkte.
+  </p>
+</div>
+
+<div class="card">
+  <h2>Punkte pro Tipp</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Kategorie</th>
+        <th>Punkte</th>
+        <th>Erklärung</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Etappensieger</strong></td>
+        <td><strong>5 Punkte</strong></td>
+        <td>Pro Etappe (1–9): Wenn die getippte Fahrerin die Etappe gewinnt</td>
+      </tr>
+      <tr>
+        <td><span style="color: var(--yellow); font-weight: 600;">Gesamtwertung (Gelbes Trikot)</span></td>
+        <td><strong>15 Punkte</strong></td>
+        <td>Wenn deine getippte Fahrerin am Ende Gesamtsiegerin ist</td>
+      </tr>
+      <tr>
+        <td><span style="color: var(--green); font-weight: 600;">Punktewertung (Grünes Trikot)</span></td>
+        <td><strong>10 Punkte</strong></td>
+        <td>Wenn deine getippte Fahrerin die Punktewertung gewinnt</td>
+      </tr>
+      <tr>
+        <td><span style="color: var(--red); font-weight: 600;">Bergwertung (Gepunktetes Trikot)</span></td>
+        <td><strong>10 Punkte</strong></td>
+        <td>Wenn deine getippte Fahrerin die Bergwertung gewinnt</td>
+      </tr>
+      <tr>
+        <td>Nachwuchswertung (Weißes Trikot)</td>
+        <td><strong>10 Punkte</strong></td>
+        <td>Wenn deine getippte Fahrerin die Jugendwertung gewinnt (U23)</td>
+      </tr>
+      <tr>
+        <td>Teamwertung</td>
+        <td><strong>5 Punkte</strong></td>
+        <td>Wenn das getippte Team die Teamwertung gewinnt</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top: 1rem;"><strong>Maximale Punkte:</strong> 5 Etappen × 5 Punkte + 5 Vorab-Tipps = max. 75 Punkte</p>
+</div>
+
+<div class="card">
+  <h2>Tipp-Eingabe</h2>
+
+  <h3>Vorab-Tipps</h3>
+  <p>
+    Diese gibst du <strong>vor Etappe 1</strong> ab (Sperrfrist: Freitag, 01.08.2026).
+    Nach Start von Etappe 1 sind Vorab-Tipps gesperrt und können nicht mehr geändert werden.
+  </p>
+  <p>
+    <a href="{{ url_for('player.pretour') }}">→ Zu deinen Vorab-Tipps</a>
+  </p>
+
+  <h3>Etappen-Tipps</h3>
+  <p>
+    Für jede Etappe (1–9) kannst du die Etappensiegerin tippen.
+    Ein Tipp ist möglich, <strong>solange die Etappe noch nicht gesperrt ist</strong>.
+    Etappen werden typischerweise 30 Minuten vor dem Start gesperrt.
+  </p>
+  <p>
+    <a href="{{ url_for('player.stages_overview') }}">→ Zu deinen Etappen-Tipps</a>
+  </p>
+</div>
+
+<div class="card">
+  <h2>Korrekte Tipps</h2>
+  <p>
+    Ein Tipp zählt als korrekt, wenn die von dir eingegebene Fahrerin/das Team
+    <strong>exakt</strong> mit dem offiziellen Ergebnis übereinstimmt.
+    Kleine Tippfehler im Namen zählen nicht — achte auf die Schreibweise
+    in der Dropdown-Liste!
+  </p>
+  <p>
+    <strong>Beispiel:</strong> Wenn "Demi Vollering" gewinnt, zählt der Tipp
+    "VOLLERING Demi" — nicht "Demi" allein oder "Vollering D."
+  </p>
+</div>
+
+<div class="card">
+  <h2>Leaderboard & Endergebnis</h2>
+  <p>
+    Nach jeder Etappe werden die Punkte aktualisiert.
+    Das <a href="{{ url_for('player.leaderboard') }}">Leaderboard</a>
+    zeigt deine aktuelle Platzierung.
+  </p>
+  <p>
+    <strong>Sieger:</strong> Spieler:in mit den meisten Punkten nach Etappe 9.
+  </p>
+</div>
+
+<div class="card">
+  <h2>Tipps zum Gewinnen</h2>
+  <ul>
+    <li><strong>Kenne deine Favoriten:</strong> Verfolge die aktuelle Form der Fahrerinnen bevor du deine Vorab-Tipps abgibst.</li>
+    <li><strong>Etappenprofil beachten:</strong> Bergige Etappen für Kletterer, flache Etappen für Sprinterinnen.</li>
+    <li><strong>Gesamtwertung:</strong> Die 15 Punkte sind die wertvollsten — recherchiere die stärkste Fahrererin!</li>
+    <li><strong>Riskieren oder spielen sicher:</strong> Unterschätzte Fahrerinnen können überraschend gewinnen.</li>
+  </ul>
+</div>
+
+<p><a href="{{ url_for('player.stages_overview') }}">← zurück zu deinen Tipps</a></p>
+{% endblock %}

@@ -133,3 +133,8 @@ def stage_pick(number):
 def leaderboard():
     board = compute_leaderboard()
     return render_template("leaderboard.html", board=board)
+
+
+@bp.route("/rules")
+def rules():
+    return render_template("rules.html", classifications=CLASSIFICATIONS, labels=CLASSIFICATION_LABELS)
