@@ -4,7 +4,7 @@ from flask import current_app
 from procyclingstats import RaceStartlist, Stage
 
 from .db import db
-from .models import CLASSIFICATIONS, FinalClassificationResult, Rider, Stage as StageModel, StageResult
+from .models import CLASSIFICATIONS, FinalClassificationResult, Rider, Stage as StageModel, StageResult, Team
 
 LAST_STAGE_NUMBER = 9
 
@@ -26,7 +26,11 @@ def _stage_url(number):
 
 
 def sync_startlist():
-    """Fetch the startlist and (re)populate the Rider autocomplete table."""
+    """Fetch the startlist and (re)populate the Rider and Team dropdown tables.
+
+    The team captain is identified as the first rider listed per team in the
+    startlist (procyclingstats ordering convention).
+    """
     try:
         startlist = RaceStartlist(f"race/{_race_slug()}/{_race_year()}/startlist").startlist()
     except Exception as exc:
@@ -35,12 +39,36 @@ def sync_startlist():
     if not startlist:
         raise SyncError("Startlist ist leer oder konnte nicht gelesen werden.")
 
-    existing = {r.name for r in Rider.query.all()}
+    existing_riders = {r.name: r for r in Rider.query.all()}
+    existing_teams = {t.name for t in Team.query.all()}
+    first_rider_per_team = {}
+
     for entry in startlist:
         name = (entry.get("rider_name") or "").strip()
-        if name and name not in existing:
-            db.session.add(Rider(name=name))
-            existing.add(name)
+        team_name = (entry.get("team_name") or "").strip() or None
+        if not name:
+            continue
+
+        rider = existing_riders.get(name)
+        if rider is None:
+            rider = Rider(name=name, team_name=team_name, is_captain=False)
+            db.session.add(rider)
+            existing_riders[name] = rider
+        else:
+            rider.team_name = team_name
+            rider.is_captain = False
+
+        if team_name and team_name not in existing_teams:
+            db.session.add(Team(name=team_name))
+            existing_teams.add(team_name)
+
+        # Mark first rider per team as captain
+        if team_name and team_name not in first_rider_per_team:
+            first_rider_per_team[team_name] = name
+
+    for team_name, captain_name in first_rider_per_team.items():
+        existing_riders[captain_name].is_captain = True
+
     db.session.commit()
     return len(startlist)
 

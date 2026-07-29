@@ -85,3 +85,10 @@ class FinalClassificationResult(db.Model):
 class Rider(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
+    team_name = db.Column(db.String(120), nullable=True)
+    is_captain = db.Column(db.Boolean, default=False, nullable=False)
+
+
+class Team(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=True, nullable=False)

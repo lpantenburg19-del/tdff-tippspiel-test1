@@ -7,10 +7,10 @@ from ..models import (
     CLASSIFICATION_LABELS,
     Player,
     PreTourPrediction,
-    Rider,
     Stage,
     StagePrediction,
 )
+from ..rider_groups import build_rider_groups, build_team_options
 from ..scoring import compute_leaderboard
 
 bp = Blueprint("player", __name__)
@@ -74,12 +74,12 @@ def pretour():
         flash("Vorab-Tipps gespeichert.")
         return redirect(url_for("player.pretour"))
 
-    riders = [r.name for r in Rider.query.order_by(Rider.name.asc()).all()]
     return render_template(
         "pretour_picks.html",
         prediction=prediction,
         locked=locked,
-        riders=riders,
+        rider_groups=build_rider_groups(),
+        team_options=build_team_options(),
         classifications=CLASSIFICATIONS,
         labels=CLASSIFICATION_LABELS,
     )
@@ -112,7 +112,7 @@ def stage_pick(number):
 
         rider_name = (request.form.get("predicted_rider") or "").strip()
         if not rider_name:
-            flash("Bitte eine Fahrerin eingeben.")
+            flash("Bitte eine Fahrerin auswählen.")
             return redirect(url_for("player.stage_pick", number=number))
 
         if pick is None:
@@ -124,8 +124,9 @@ def stage_pick(number):
         flash(f"Tipp für Etappe {number} gespeichert.")
         return redirect(url_for("player.stages_overview"))
 
-    riders = [r.name for r in Rider.query.order_by(Rider.name.asc()).all()]
-    return render_template("stage_picks.html", stage=stage, pick=pick, riders=riders)
+    return render_template(
+        "stage_picks.html", stage=stage, pick=pick, rider_groups=build_rider_groups()
+    )
 
 
 @bp.route("/leaderboard")

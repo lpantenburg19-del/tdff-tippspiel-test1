@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_select_macros.html" as macros %}
 {% block title %}Vorab-Tipps – TdFF Tippspiel{% endblock %}
 {% block content %}
 <h1>Vorab-Tipps auf die Endklassierungen</h1>
@@ -9,24 +10,26 @@
 {% endif %}
 
 <form method="post" class="card">
-  <datalist id="rider-list">
-    {% for r in riders %}<option value="{{ r }}">{% endfor %}
-  </datalist>
-
   {% for c in classifications %}
     {% set field = c ~ '_winner' %}
+    {% set current = prediction.field_for(c) or '' %}
     <label for="{{ field }}"><span class="jersey-chip jersey-{{ c }}"></span>{{ labels[c] }}</label>
-    <input
-      type="text"
-      id="{{ field }}"
-      name="{{ field }}"
-      list="rider-list"
-      value="{{ prediction.field_for(c) or '' }}"
-      {% if locked %}disabled{% endif %}
-      placeholder="Name eingeben"
-    >
+    {% if c == 'team' %}
+      {% if team_options %}
+        {{ macros.team_select(field, field, team_options, current, locked) }}
+      {% else %}
+        <input type="text" id="{{ field }}" name="{{ field }}" value="{{ current }}" {% if locked %}disabled{% endif %} placeholder="Name eingeben (Startliste noch nicht synchronisiert)">
+      {% endif %}
+    {% else %}
+      {% if rider_groups %}
+        {{ macros.rider_select(field, field, rider_groups, current, locked) }}
+      {% else %}
+        <input type="text" id="{{ field }}" name="{{ field }}" value="{{ current }}" {% if locked %}disabled{% endif %} placeholder="Name eingeben (Startliste noch nicht synchronisiert)">
+      {% endif %}
+    {% endif %}
   {% endfor %}
 
+  {% if rider_groups %}<p class="muted">Fahrerinnen gruppiert nach Team, ★ = Kapitänin (erste Fahrerin im Team).</p>{% endif %}
   {% if not locked %}<button type="submit">Speichern</button>{% endif %}
 </form>
 {% endblock %}

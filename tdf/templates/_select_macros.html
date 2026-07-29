@@ -1,0 +1,31 @@
+{% macro rider_select(field_id, field_name, rider_groups, current, disabled) %}
+  {% set flat_names = [] %}
+  {% for group in rider_groups %}
+    {% for r in group.riders %}{% set _ = flat_names.append(r.name) %}{% endfor %}
+  {% endfor %}
+  <select id="{{ field_id }}" name="{{ field_name }}" {% if disabled %}disabled{% endif %}>
+    <option value="">— bitte wählen —</option>
+    {% if current and current not in flat_names %}
+      <option value="{{ current }}" selected>{{ current }} (eigener Eintrag)</option>
+    {% endif %}
+    {% for group in rider_groups %}
+      <optgroup label="{{ group.team_name }}">
+        {% for r in group.riders %}
+          <option value="{{ r.name }}" style="background-color: {{ group.color }};" {% if r.name == current %}selected{% endif %}>{% if r.is_captain %}★ {% endif %}{{ r.name }}</option>
+        {% endfor %}
+      </optgroup>
+    {% endfor %}
+  </select>
+{% endmacro %}
+
+{% macro team_select(field_id, field_name, team_options, current, disabled) %}
+  <select id="{{ field_id }}" name="{{ field_name }}" {% if disabled %}disabled{% endif %}>
+    <option value="">— bitte wählen —</option>
+    {% if current and current not in team_options | map(attribute="name") | list %}
+      <option value="{{ current }}" selected>{{ current }} (eigener Eintrag)</option>
+    {% endif %}
+    {% for t in team_options %}
+      <option value="{{ t.name }}" style="background-color: {{ t.color }};" {% if t.name == current %}selected{% endif %}>{{ t.name }}</option>
+    {% endfor %}
+  </select>
+{% endmacro %}

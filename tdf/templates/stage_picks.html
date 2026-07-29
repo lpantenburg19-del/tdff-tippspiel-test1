@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_select_macros.html" as macros %}
 {% block title %}Etappe {{ stage.number }} – TdFF Tippspiel{% endblock %}
 {% block content %}
 <h1>Etappe {{ stage.number }} — {{ stage.date.strftime('%d.%m.%Y') }}</h1>
@@ -8,19 +9,22 @@
 {% endif %}
 
 <form method="post" class="card">
-  <datalist id="rider-list">
-    {% for r in riders %}<option value="{{ r }}">{% endfor %}
-  </datalist>
   <label for="predicted_rider">Wer gewinnt die Etappe?</label>
-  <input
-    type="text"
-    id="predicted_rider"
-    name="predicted_rider"
-    list="rider-list"
-    value="{{ pick.predicted_rider if pick else '' }}"
-    {% if stage.is_locked %}disabled{% endif %}
-    placeholder="Name eingeben"
-  >
+  {% set current = pick.predicted_rider if pick else '' %}
+  {% if rider_groups %}
+    {{ macros.rider_select("predicted_rider", "predicted_rider", rider_groups, current, stage.is_locked) }}
+    <p class="muted">Gruppiert nach Team, ★ = Kapitänin (erste Fahrerin im Team).</p>
+  {% else %}
+    <p class="muted">Startliste noch nicht synchronisiert — bitte Namen von Hand eingeben.</p>
+    <input
+      type="text"
+      id="predicted_rider"
+      name="predicted_rider"
+      value="{{ current }}"
+      {% if stage.is_locked %}disabled{% endif %}
+      placeholder="Name eingeben"
+    >
+  {% endif %}
   {% if not stage.is_locked %}<button type="submit">Speichern</button>{% endif %}
 </form>
 
