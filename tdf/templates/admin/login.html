@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Admin-Login – TdFF Tippspiel{% endblock %}
+{% block content %}
+<h1>Admin-Login</h1>
+<form method="post" class="card">
+  <label for="password">Admin-Passwort</label>
+  <input type="password" id="password" name="password" required autofocus>
+  <button type="submit">Einloggen</button>
+</form>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Rangliste – TdFF Tippspiel{% endblock %}
+{% block content %}
+<h1>Rangliste</h1>
+<div class="ranking-card">
+  {% for entry in board %}
+  <div class="ranking-row {{ 'leader' if loop.index == 1 else '' }}">
+    <div class="rank">{{ loop.index }}</div>
+    <div class="rider">
+      <div class="rider-name">{{ entry.player.name }}</div>
+      <div class="rider-breakdown">
+        {% if entry.breakdown %}
+          {{ entry.breakdown | join(', ') }}
+        {% else %}
+          <span>noch keine Treffer</span>
+        {% endif %}
+      </div>
+    </div>
+    <div class="points">{{ entry.points }}<span>Punkte</span></div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

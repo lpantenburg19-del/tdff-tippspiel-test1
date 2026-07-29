@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Admin – TdFF Tippspiel{% endblock %}
+{% block content %}
+<h1>Admin-Dashboard</h1>
+
+<section class="card">
+  <h2>Startliste</h2>
+  <p class="muted">Befüllt die Autocomplete-Vorschläge für Tipp-Eingaben. Vor Tourstart einmal synchronisieren.</p>
+  <form method="post" action="{{ url_for('admin.sync_startlist') }}">
+    <button type="submit">Startliste jetzt synchronisieren</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Etappen</h2>
+  <table class="stages-table">
+    <thead>
+      <tr><th>Etappe</th><th>Datum</th><th>Status</th><th>Ergebnis</th><th>Aktionen</th></tr>
+    </thead>
+    <tbody>
+      {% for stage in stages %}
+      {% set result = stage_results.get(stage.id) %}
+      <tr>
+        <td>{{ stage.number }}</td>
+        <td>{{ stage.date.strftime('%d.%m.%Y') }}</td>
+        <td>{% if stage.is_locked %}<span class="badge locked">gesperrt</span>{% else %}<span class="badge open">offen</span>{% endif %}</td>
+        <td>
+          {% if result %}
+            {{ result.winning_rider }}
+            <span class="muted">({{ result.source }})</span>
+          {% else %}
+            <span class="muted">—</span>
+          {% endif %}
+        </td>
+        <td class="actions">
+          {% if stage.is_locked %}
+            <form method="post" action="{{ url_for('admin.unlock_stage', number=stage.number) }}"><button type="submit" class="btn-secondary">Entsperren</button></form>
+          {% else %}
+            <form method="post" action="{{ url_for('admin.lock_stage', number=stage.number) }}"><button type="submit" class="btn-secondary">Sperren</button></form>
+          {% endif %}
+          <form method="post" action="{{ url_for('admin.sync_stage', number=stage.number) }}"><button type="submit">Jetzt synchronisieren</button></form>
+          <form method="post" action="{{ url_for('admin.override_stage', number=stage.number) }}" class="inline-form">
+            <input type="text" name="winning_rider" placeholder="manuell überschreiben">
+            <button type="submit" class="btn-secondary">Setzen</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="card">
+  <h2>Endklassierungen</h2>
+  <form method="post" action="{{ url_for('admin.sync_final') }}">
+    <button type="submit">Endklassierungen jetzt synchronisieren</button>
+  </form>
+  <p class="muted">Funktioniert erst sinnvoll, sobald Etappe 9 gefahren wurde.</p>
+
+  <table class="stages-table">
+    <thead>
+      <tr><th>Wertung</th><th>Sieger:in</th><th>Manuell setzen</th></tr>
+    </thead>
+    <tbody>
+      {% for c in classifications %}
+      {% set result = final_results.get(c) %}
+      <tr>
+        <td><span class="jersey-chip jersey-{{ c }}"></span>{{ labels[c] }}</td>
+        <td>
+          {% if result %}
+            {{ result.winner }} <span class="muted">({{ result.source }})</span>
+          {% else %}
+            <span class="muted">—</span>
+          {% endif %}
+        </td>
+        <td>
+          <form method="post" action="{{ url_for('admin.override_final') }}" class="inline-form">
+            <input type="hidden" name="classification" value="{{ c }}">
+            <input type="text" name="winner" placeholder="Name">
+            <button type="submit" class="btn-secondary">Setzen</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<p><a href="{{ url_for('admin.logout') }}">Admin-Logout</a></p>
+{% endblock %}

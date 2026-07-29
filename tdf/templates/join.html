@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Mitmachen – TdFF Tippspiel{% endblock %}
+{% block content %}
+<h1>Willkommen beim Tour de France Femmes Tippspiel</h1>
+<p>Gib deinen Namen ein, um mitzuspielen. Kein Passwort nötig — merk dir einfach deine Schreibweise.</p>
+<form method="post" class="card">
+  <label for="name">Dein Name</label>
+  <input type="text" id="name" name="name" required autofocus placeholder="z.B. Alice">
+  <button type="submit">Los geht's</button>
+</form>
+{% endblock %}

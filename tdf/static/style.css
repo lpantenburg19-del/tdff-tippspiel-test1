@@ -1,0 +1,399 @@
+:root {
+  --black: #161616;
+  --black-soft: #232323;
+  --yellow: #ffe500;
+  --yellow-deep: #f0d400;
+  --white: #ffffff;
+  --ink: #1c1c1c;
+  --muted: #767676;
+  --border: #e3e3e3;
+  --bg: #f4f4f4;
+  --green: #2f9e44;
+  --red: #d81f2b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+h1, h2, h3 {
+  font-family: "Oswald", "Inter", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* Header */
+
+.tdf-header {
+  background: var(--black);
+  color: var(--white);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.brand {
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-family: "Oswald", sans-serif;
+}
+
+.brand-main {
+  color: var(--yellow);
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0.03em;
+}
+
+.brand-sub {
+  color: var(--white);
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.countdown {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--black-soft);
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+}
+
+.countdown-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #b8b8b8;
+  white-space: nowrap;
+}
+
+.countdown-digits {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.countdown-digits div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.countdown-digits strong {
+  font-family: "Oswald", sans-serif;
+  color: var(--yellow);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-digits small {
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #999;
+}
+
+.subnav {
+  border-top: 1px solid #2b2b2b;
+  display: flex;
+  gap: 0.25rem;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.subnav a {
+  color: #e6e6e6;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 0.85rem 0.9rem;
+  border-bottom: 3px solid transparent;
+}
+
+.subnav a:hover { color: var(--yellow); }
+
+.subnav a.active {
+  color: var(--yellow);
+  border-bottom-color: var(--yellow);
+}
+
+/* Layout */
+
+.container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+main > h1:first-of-type {
+  background: var(--black);
+  color: var(--white);
+  padding: 2rem 1.75rem 1.75rem;
+  margin: -1.5rem -1.5rem 1.75rem;
+  border-bottom: 5px solid var(--yellow);
+  text-transform: uppercase;
+  font-size: 1.9rem;
+}
+
+main > h1:first-of-type::before {
+  content: "Tour de France Femmes 2026";
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 0.6rem;
+}
+
+/* Cards & forms */
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.card label {
+  display: flex;
+  align-items: center;
+  margin-top: 0.9rem;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.card input[type="text"],
+.card input[type="password"] {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.card input:focus {
+  outline: none;
+  border-color: var(--yellow-deep);
+  box-shadow: 0 0 0 3px rgba(255, 229, 0, 0.35);
+}
+
+button, .btn {
+  margin-top: 1rem;
+  background: var(--yellow);
+  color: var(--ink);
+  border: none;
+  border-radius: 5px;
+  padding: 0.65rem 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+button:hover, .btn:hover { background: var(--yellow-deep); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 0.5rem 0.9rem;
+  font-size: 0.75rem;
+}
+
+.btn-secondary:hover { background: var(--ink); color: var(--white); }
+
+.actions button, .inline-form button {
+  font-size: 0.72rem;
+  padding: 0.5rem 0.8rem;
+}
+
+/* Jersey chips */
+
+.jersey-chip {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 3px;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.jersey-gc { background: var(--yellow); }
+.jersey-points { background: var(--green); }
+.jersey-mountains { background: var(--red); }
+.jersey-youth { background: var(--white); border: 1px solid #ccc; }
+.jersey-team { background: #3a3a3a; }
+
+/* Tables (admin, stages) */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.65rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+
+th {
+  background: var(--black);
+  color: var(--white);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+.badge {
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.badge.open { background: #e3f7e3; color: #1a7a1a; }
+.badge.locked { background: #fbe4e4; color: #a11; }
+
+.muted { color: var(--muted); font-size: 0.85rem; }
+
+.flashes {
+  list-style: none;
+  padding: 0.75rem 1rem;
+  margin: 0 0 1.25rem;
+  background: #fff9cc;
+  border-left: 4px solid var(--yellow-deep);
+  border-radius: 4px;
+}
+
+.notice {
+  background: #fbe4e4;
+  border-left: 4px solid var(--red);
+  padding: 0.7rem 1rem;
+  border-radius: 4px;
+}
+
+.actions form { display: inline-block; margin-right: 0.4rem; }
+.inline-form { display: flex; gap: 0.4rem; margin: 0; }
+.inline-form input { padding: 0.35rem 0.55rem; }
+.inline-form button { margin-top: 0; }
+
+section.card table { margin-top: 1rem; }
+
+section.card h2 {
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  border-left: 5px solid var(--yellow);
+  padding-left: 0.6rem;
+  margin-top: 0;
+}
+
+/* Leaderboard / ranking panel */
+
+.ranking-card {
+  background: var(--black);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #2b2b2b;
+}
+
+.ranking-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.ranking-row:last-child { border-bottom: none; }
+
+.ranking-row.leader { background: linear-gradient(90deg, rgba(255,229,0,0.14), transparent); }
+
+.ranking-row .rank {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #888;
+  width: 1.6rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.ranking-row.leader .rank { color: var(--yellow); }
+
+.ranking-row .rider { flex: 1; min-width: 0; }
+
+.rider-name {
+  color: var(--white);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.rider-breakdown {
+  color: #9a9a9a;
+  font-size: 0.78rem;
+  margin-top: 0.15rem;
+  overflow-wrap: anywhere;
+}
+
+.ranking-row .points {
+  font-family: "Oswald", sans-serif;
+  color: var(--yellow);
+  font-weight: 700;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.ranking-row .points span {
+  display: block;
+  font-family: "Inter", sans-serif;
+  color: #888;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .topbar { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .countdown { align-self: stretch; justify-content: space-between; }
+  .subnav { overflow-x: auto; }
+  main > h1:first-of-type { font-size: 1.5rem; }
+}

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Tour de France Femmes Tippspiel{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="tdf-header">
+    <div class="topbar">
+      <a class="brand" href="{{ url_for('player.stages_overview') }}">
+        <span class="brand-main">TdFF</span><span class="brand-sub">Tippspiel</span>
+      </a>
+      <div class="countdown" id="countdown">
+        <span class="countdown-label">Tour startet in</span>
+        <div class="countdown-digits">
+          <div><strong id="cd-days">–</strong><small>Tage</small></div>
+          <div><strong id="cd-hours">–</strong><small>Std</small></div>
+          <div><strong id="cd-mins">–</strong><small>Min</small></div>
+          <div><strong id="cd-secs">–</strong><small>Sek</small></div>
+        </div>
+      </div>
+    </div>
+    <nav class="subnav">
+      <a href="{{ url_for('player.stages_overview') }}" class="{{ 'active' if request.endpoint == 'player.stages_overview' else '' }}">Etappen</a>
+      <a href="{{ url_for('player.pretour') }}" class="{{ 'active' if request.endpoint == 'player.pretour' else '' }}">Vorab-Tipps</a>
+      <a href="{{ url_for('player.leaderboard') }}" class="{{ 'active' if request.endpoint == 'player.leaderboard' else '' }}">Rangliste</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <script>
+    (function () {
+      var target = new Date("2026-08-01T00:00:00");
+      var els = {
+        days: document.getElementById("cd-days"),
+        hours: document.getElementById("cd-hours"),
+        mins: document.getElementById("cd-mins"),
+        secs: document.getElementById("cd-secs")
+      };
+      var label = document.querySelector(".countdown-label");
+      function pad(n) { return String(n).padStart(2, "0"); }
+      function tick() {
+        var diff = target - new Date();
+        if (diff <= 0) {
+          label.textContent = "Die Tour läuft!";
+          els.days.textContent = els.hours.textContent = els.mins.textContent = els.secs.textContent = "--";
+          return;
+        }
+        var days = Math.floor(diff / 86400000);
+        var hours = Math.floor((diff % 86400000) / 3600000);
+        var mins = Math.floor((diff % 3600000) / 60000);
+        var secs = Math.floor((diff % 60000) / 1000);
+        els.days.textContent = pad(days);
+        els.hours.textContent = pad(hours);
+        els.mins.textContent = pad(mins);
+        els.secs.textContent = pad(secs);
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+  </script>
+</body>
+</html>

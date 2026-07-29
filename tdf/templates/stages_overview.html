@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Etappen – TdFF Tippspiel{% endblock %}
+{% block content %}
+<h1>Etappen</h1>
+<table class="stages-table">
+  <thead>
+    <tr><th>Etappe</th><th>Datum</th><th>Status</th><th>Dein Tipp</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for stage in stages %}
+    <tr>
+      <td>{{ stage.number }}</td>
+      <td>{{ stage.date.strftime('%d.%m.%Y') }}</td>
+      <td>{% if stage.is_locked %}<span class="badge locked">gesperrt</span>{% else %}<span class="badge open">offen</span>{% endif %}</td>
+      <td>{{ my_picks.get(stage.id, '–') }}</td>
+      <td><a href="{{ url_for('player.stage_pick', number=stage.number) }}">Tippen</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

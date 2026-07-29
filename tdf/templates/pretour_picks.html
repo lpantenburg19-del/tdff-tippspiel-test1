@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Vorab-Tipps – TdFF Tippspiel{% endblock %}
+{% block content %}
+<h1>Vorab-Tipps auf die Endklassierungen</h1>
+{% if locked %}
+  <p class="notice">Etappe 1 ist gestartet — deine Vorab-Tipps sind jetzt gesperrt.</p>
+{% else %}
+  <p>Tippe, bevor Etappe 1 startet, wer am Ende der Tour welches Trikot trägt.</p>
+{% endif %}
+
+<form method="post" class="card">
+  <datalist id="rider-list">
+    {% for r in riders %}<option value="{{ r }}">{% endfor %}
+  </datalist>
+
+  {% for c in classifications %}
+    {% set field = c ~ '_winner' %}
+    <label for="{{ field }}"><span class="jersey-chip jersey-{{ c }}"></span>{{ labels[c] }}</label>
+    <input
+      type="text"
+      id="{{ field }}"
+      name="{{ field }}"
+      list="rider-list"
+      value="{{ prediction.field_for(c) or '' }}"
+      {% if locked %}disabled{% endif %}
+      placeholder="Name eingeben"
+    >
+  {% endfor %}
+
+  {% if not locked %}<button type="submit">Speichern</button>{% endif %}
+</form>
+{% endblock %}

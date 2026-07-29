@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Etappe {{ stage.number }} – TdFF Tippspiel{% endblock %}
+{% block content %}
+<h1>Etappe {{ stage.number }} — {{ stage.date.strftime('%d.%m.%Y') }}</h1>
+
+{% if stage.is_locked %}
+  <p class="notice">Diese Etappe ist gesperrt — Tipps werden nicht mehr angenommen.</p>
+{% endif %}
+
+<form method="post" class="card">
+  <datalist id="rider-list">
+    {% for r in riders %}<option value="{{ r }}">{% endfor %}
+  </datalist>
+  <label for="predicted_rider">Wer gewinnt die Etappe?</label>
+  <input
+    type="text"
+    id="predicted_rider"
+    name="predicted_rider"
+    list="rider-list"
+    value="{{ pick.predicted_rider if pick else '' }}"
+    {% if stage.is_locked %}disabled{% endif %}
+    placeholder="Name eingeben"
+  >
+  {% if not stage.is_locked %}<button type="submit">Speichern</button>{% endif %}
+</form>
+
+<p><a href="{{ url_for('player.stages_overview') }}">&larr; zurück zur Übersicht</a></p>
+{% endblock %}
