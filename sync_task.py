@@ -1,4 +1,5 @@
-"""Standalone script for the daily PythonAnywhere scheduled task.
+"""Standalone script to fetch results, meant to be run daily (manually, via
+cron, or via a PythonAnywhere scheduled task if deployed there).
 
 Fetches results for any stage that has already happened but has no result yet,
 and once the final stage is done, fetches the final classifications too.
@@ -6,6 +7,10 @@ Safe to run repeatedly — already-synced stages are just re-synced (harmless).
 """
 
 from datetime import date
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from tdf import create_app
 from tdf import pcs_sync
